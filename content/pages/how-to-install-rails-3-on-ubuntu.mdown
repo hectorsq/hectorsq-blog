@@ -1,0 +1,102 @@
+Date: 10 Sep 2010
+Categories: rails, ubuntu
+
+# How to install Rails 3 on Ubuntu
+
+In this post you will find the steps to install the Ruby on Rails development environment on Ubuntu 10.04.
+
+* [Install and configure git](#git)
+* [Install rvm](#rvm)
+* [Install ruby using rvm](#ruby)
+* [Install rails](#rails)
+* [Create and test a rails app](#test)
+* [Create your project's rvm file](#rvmrc)
+
+## <a name="git">Install and configure git</a>
+
+    $ sudo apt-get install git-core
+    $ git config --global user.name "Your name"
+    $ git config --global user.email your_email
+
+If you want git's graphical interfaces install
+   
+    $ sudo apt-get install gitk
+    $ sudo apt-get install gitgui
+
+## <a name="rvm">Install rvm</a>
+
+    $ sudo apt-get install curl
+    $ bash < <( curl http://rvm.beginrescueend.com/releases/rvm-install-head )
+
+### Edit .bashrc
+Change the line that contains
+
+    [ -z "$PS1" ] && return
+
+near the beginning of the file to 
+
+    if [[ -n "$PS1" ]] ; then
+
+Indent all the remaining lines of the file and add a line containing
+
+    fi
+
+at the end of the file.
+
+Add another line at the end (after fi) containing
+
+    [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
+
+and save your .bashrc file.
+
+Close the terminal, open a new one and type 
+
+    $ type rvm | head -n1
+
+(number one, not letter l)
+
+If everything is working you should see
+
+    rvm is a function
+
+Note: After installing rvm do not use sudo to install gems.
+
+## <a name = "ruby">Install ruby using rvm</a>
+Install the following packages required to build ruby:
+
+    $ sudo apt-get install build-essential bison openssl libreadline5 libreadline-dev zlib1g zlib1g-dev libssl-dev libsqlite3-0 libsqlite3-dev sqlite3 libreadline-dev libxml2-dev
+
+the list of packages was obtained by typing 
+
+    $ rvm notes
+
+Install the required ruby version and select it. In my case I will install only Ruby Enterprise Edition
+
+    $ rvm install ree
+    $ rvm use ree
+
+Create a gemset and select it
+
+    $ rvm gemset create mygemset
+    $ rvm gemset use mygemset
+
+## <a name = "rails">Install rails</a>
+    
+    $ gem install rails -v 3.0.0
+
+## <a name = "test">Create and test a rails app</a>
+
+    $ gem install sqlite3-ruby
+    $ rails new myproject
+    $ cd myproject
+    $ rails generate scaffold User name:string
+    $ rake db:migrate
+    $ rails server
+
+In your browser navigate to http://localhost:3000, you should see the default rails page.
+
+Navigate to http://localhost:3000/users and play with your new app creating, editing and erasing users.
+
+## <a name = "rvmrc">Create your project's rvm file</a>
+    $ echo "rvm ree@mygemset" >> .rvmrc
+
