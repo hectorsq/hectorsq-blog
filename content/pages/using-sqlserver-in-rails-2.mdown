@@ -1,0 +1,33 @@
+Date: 12 Feb 2008
+Categories: rails, windows, sqlserver
+
+# Using SQL Server in Rails 2
+
+These are the steps to access a SQL Server database from a Rails 2.0 application running on Windows.
+
+The SQL Server adapter is not incuded by default in Rails 2. It is necessary to download and install it using the following command.
+
+    gem install activerecord-sqlserver-adapter --source=http://gems.rubyonrails.org
+
+Download the latest version of ruby-dbi from
+
+    http://rubyforge.org/projects/ruby-dbi/
+
+and then extract the file from ruby-dbi\lib\dbd\ADO.rb to C:\ruby\lib\ruby\site_ruby\1.8\DBD\ADO\ADO.rb.
+
+Warning, the folder ADO does not exist, so you have to create it in advance.
+
+It is not possible to preconfigure rails for SQL Server using the --database option, just create your application as usual and then modify config\database.yml in your application folder as follows:
+
+    development:
+      adapter: sqlserver
+      database: your_database_name
+      host: your_sqlserver_host
+      username: your_sqlserver_user
+      password: your_sqlserver_password
+
+Run 
+
+    rake db:migrate
+
+to check your installation. If everything is fine you should not receive any error message.
