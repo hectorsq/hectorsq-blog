@@ -1,0 +1,32 @@
+Date: 27 Feb 2009
+Categories: rails, sqlserver, windows
+
+# Using rails-sqlserver-2000-2005-adapter on Windows
+
+This is a different approach to my previous post Using SQL Server in Rails 2
+
+Now I am using Rails 2.2.2 on Windows and the Rails SQL Server 2000-2005 adapter. Additionally I am using ODBC, because ADO support seems to be deprecated.
+
+The installation is straightforward as explained on the adapter's [github page][github_page]:
+
+    gem install dbi --version 0.4.0
+    gem install dbd-odbc --version 0.2.4
+    gem install rails-sqlserver-2000-2005-adapter -s http://gems.github.com
+
+Since we are using ODBC it is necessary to configure the data source using the ODBC Data Source Administrator in Windows Administrative Tools. In my case I used a System DSN.
+
+The `config\database.yml` should look like this:
+
+    # Configuration for rails-sqlserver-2000-2005-adapter
+    # using ODBC
+
+    development:
+      adapter: sqlserver
+      mode: ODBC
+      dsn: your_database_dsn
+      username: your_sqlserver_user
+      password: your_sqlserver_password
+
+Where `your_database_dsn` is the System Data Source name that you defined in the ODBC Data Source Administrator.
+
+[github_page]: http://github.com/rails-sqlserver/2000-2005-adapter/tree/master
