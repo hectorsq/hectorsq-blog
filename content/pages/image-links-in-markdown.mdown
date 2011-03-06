@@ -1,0 +1,60 @@
+Date: 18 Mar 2010
+Categories: markdown
+
+# Image links in markdown
+
+I wanted to use an image from [Flickr][flickr] and give attribution 
+to the creator, linking the image to its original location.
+
+[![markdown][image]][attribution]
+
+Since markdown supports inline html my first approach was to paste the 
+following code in the markdown file:
+
+    <a href="http://link_url">
+        <img src="http://image_url" />
+    </a>
+
+However this approach is not elegant enough, it would be better if this 
+could be done using pure markdown syntax.
+
+The syntax for a link in markdown is:
+
+    [text](http://link_url)
+
+And the syntax for an image in markdown is:
+
+    ![alt text](http://image_url)
+
+To create an image link in markdown the following could be used
+
+    [![alt text](http://image_url)](http://link_url]
+
+There is an alternative method to create links and images in markdown,
+known as reference-style links, 
+using IDs that refer to URLs later in the file. This is a neater 
+syntax and allows us to keep all the URLs in one place, usually at the 
+end of the file.
+
+The reference-style syntax for a link is:
+
+    [text][id_1]
+
+    [id_1]: http://link_url
+
+The reference-style for an image is
+
+    ![alt text][id_2]
+
+    [id_2]: http://image_url
+
+Finally, the resulting image link is:   
+
+    [![alt text][id_2]][id_1]
+
+    [id_1]: http://link_url
+    [id_2]: http://image_url
+
+[flickr]: http://www.flickr.com
+[attribution]: http://www.flickr.com/photos/hectorsq/4470754707/
+[image]: http://farm3.static.flickr.com/2751/4470754707_e357a1ab59.jpg
