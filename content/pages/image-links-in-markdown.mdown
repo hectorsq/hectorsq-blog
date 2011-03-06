@@ -1,5 +1,6 @@
 Date: 18 Mar 2010
 Categories: markdown
+Summary: I wanted to use an image from Flickr and give attribution to the creator, linking the image to its original location.
 
 # Image links in markdown
 

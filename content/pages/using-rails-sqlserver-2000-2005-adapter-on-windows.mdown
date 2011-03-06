@@ -1,5 +1,6 @@
 Date: 27 Feb 2009
 Categories: rails, sqlserver, windows
+Summary: This is a different approach to my previous post Using SQL Server in Rails 2.\n Now I am using Rails 2.2.2 on Windows and the Rails SQL Server 2000-2005 adapter. Additionally I am using ODBC, because ADO support seems to be deprecated.
 
 # Using rails-sqlserver-2000-2005-adapter on Windows
 

@@ -1,5 +1,7 @@
 Date: 10 Sep 2010
 Categories: rails, ubuntu
+Summary:  In this post you will find the steps to install git, rvm, ruby and Rails on Ubuntu.
+
 
 # How to install Rails 3 on Ubuntu
 

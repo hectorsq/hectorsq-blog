@@ -1,5 +1,6 @@
 Date: 12 Feb 2008
 Categories: rails, windows, sqlserver
+Summary: These are the steps to access a SQL Server database from a Rails 2.0 application running on Windows.
 
 # Using SQL Server in Rails 2
 
