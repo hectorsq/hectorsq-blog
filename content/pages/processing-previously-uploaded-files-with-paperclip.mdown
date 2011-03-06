@@ -1,0 +1,29 @@
+Date: 28 Sep 2010
+Categories: rails, paperclip, delayed_job
+
+# Processing previously uploaded files with paperclip
+
+It seems that the most popular use of [paperclip][paperclip_github] is to upload and process images. However it is also very useful to handle data files.
+
+I am currently using paperclip to upload data files and process them later in a background task using [delayed_job][delayed_job_github] since the files are quite big and proccessing them takes several minutes.
+
+The problem is to access the file contents after it has been uploaded, the solution is to use the to_file method as shown in the following code fragment.
+
+    class UploadedFile < ActiveRecord::Base
+      has_attached_file :pipes_file
+     
+      def process
+        # Get the file contents
+        content = self.pipes_file.to_file
+        content.rewind
+        while line = content.gets
+          data = line.split "|"
+          # do something with data
+        end
+      end
+    end
+
+I am succesfully using this method in an app running on Heroku to process files uploaded to Amazon S3.
+
+[paperclip_github]: http://github.com/thoughtbot/paperclip
+[delayed_job_github]: http://github.com/collectiveidea/delayed_job
