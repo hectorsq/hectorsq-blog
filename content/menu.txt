@@ -1,0 +1,6 @@
+delayed_job
+markdown
+paperclip
+rails
+sqlserver
+windows
