@@ -23,7 +23,7 @@ In this post you will find the steps to install the Ruby on Rails development en
 If you want git's graphical interfaces install
    
     $ sudo apt-get install gitk
-    $ sudo apt-get install gitgui
+    $ sudo apt-get install git-gui
 
 ## <a name="rvm">Install rvm</a>
 
