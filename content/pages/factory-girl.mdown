@@ -1,0 +1,93 @@
+Date: 24 Sep 2011
+Categories: rails, factory_girl
+Summary: Using factory_girl to create several instances of a class that belongs to another class causes a Validation failed error. This happens because each instance tries to automatically create the object to which it belongs. However since the first instance creates it, the following instances crash because the object already exists.
+
+# factory_girl Validation failed 
+
+Using [factory_girl][factory_girl_github] to create several instances of a class that belongs to
+another class causes a Validation failed error.
+
+This happens because each instance tries to automatically create the object to
+which it belongs. However since the first instance creates it, the following
+instances crash because the object already exists.
+
+I have been struggling to solve this problem and it seems finally I arrived
+to a satisfactory solution
+
+The problem arises when there is a one to many relationship between to classes
+and I try to create several instances of a class.
+
+In my case I have a subdomain which has many users:
+
+    class Subdomain < ActiveRecord::Base
+      validates_uniqueness_of :name, :case_sensitive => false
+      has_many :users
+    end
+    class User
+      belongs_to: subdomain
+    end
+
+The factories are as follows:
+
+    FactoryGirl.define do
+      factory :subdomain do
+        name 'test-subdomain'
+      end
+      factory :user do
+        subdomain
+        email 'test-user@example.com'
+        password '123456¿
+        password_confirmation '123456'
+      end
+    end
+
+When I try to create two users using the following code:
+
+    FactoryGirl.create(:user, :email => "first@example.com")
+    FactoryGirl.create(:user, :email => "second@example.com")
+
+I get the following error:
+
+    Validation failed: Name has already been taken (ActiveRecord::RecordInvalid)
+
+This happens because when the first user is created, the default subdomain is
+created too and when the second user is created the subdomain already exists.
+
+If we want to use the same subdomain for both users we can do the following:
+
+    s = FactoryGirl.create(:subdomain)
+    FactoryGirl.create(:user, :email => "first@example.com", :subdomain => s)
+    FactoryGirl.create(:user, :email => "second@example.com", :subdomain => s)
+
+However as our system grows, test data creation becomes more complex.
+
+My solution to this problem is as to change the factory for user:
+
+    factory :user do
+      subdomain { Subdomain.find_by_name('test-subdomain') || FactoryGirl.create(:subdomain) }
+      email 'test-user@example.com'
+      password '123456'
+      password_confirmation '123456'
+    end
+
+In this case the factory uses the default subdomain if it already exists,
+avoiding the validation problem.
+
+Now if we use the initial code, it works without problem, assigning both users
+to the default subdomain
+
+    FactoryGirl.create(:user, :email => "first@example.com")
+    FactoryGirl.create(:user, :email => "second@example.com")
+
+However this does not limit us to use the same subdomain for all users:
+
+    other_subdomain = FactoryGirl.create(:subdomain, :name => "other-subdomain")
+
+    FactoryGirl.create(:user, :email => "first@example.com", :subdomain => other_subdomain)
+    FactoryGirl.create(:user, :email => "second@example.com")
+
+In this case, the first user is assigned to other-subdomain and the second user is assigned
+to test-subdomain.
+
+[factory_girl_github]: https://github.com/thoughtbot/factory_girl
+
