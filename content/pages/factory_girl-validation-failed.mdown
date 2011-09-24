@@ -12,7 +12,7 @@ which it belongs. However since the first instance creates it, the following
 instances crash because the object already exists.
 
 I have been struggling to solve this problem and it seems finally I arrived
-to a satisfactory solution
+to a satisfactory solution.
 
 The problem arises when there is a one to many relationship between to classes
 and I try to create several instances of a class.
@@ -23,7 +23,7 @@ In my case I have a subdomain which has many users:
       validates_uniqueness_of :name, :case_sensitive => false
       has_many :users
     end
-    class User
+    class User < ActiveRecord::Base
       belongs_to: subdomain
     end
 
@@ -59,7 +59,7 @@ If we want to use the same subdomain for both users we can do the following:
     FactoryGirl.create(:user, :email => "first@example.com", :subdomain => s)
     FactoryGirl.create(:user, :email => "second@example.com", :subdomain => s)
 
-However as our system grows, test data creation becomes more complex.
+However as our has_many relations become deeper, test data creation becomes more complex.
 
 My solution to this problem is as to change the factory for user:
 
